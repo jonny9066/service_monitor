@@ -12,9 +12,6 @@ class pmon_logger:
         formatter = logging.Formatter('%(asctime)s'+log_delim+'%(message)s')
         handler = logging.FileHandler(log_file)
         handler.setFormatter(formatter)   
-        #set permissions
-        os.chmod(log_file, stat.S_IRUSR | stat.S_IWUSR)  
-        print('Permissions for log files set: '+log_file)
 
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
@@ -90,7 +87,7 @@ def get_processes_by_sid(sid):
         csv_reader = csv.reader(csv_file, delimiter=log_delim)
         for row in csv_reader:
             if row[3] == sid:
-                processes.append([int(row[1]), row[2]])
+                processes.append([row[1], row[2]])
         return processes
     except FileNotFoundError:
         return []

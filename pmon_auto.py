@@ -22,9 +22,11 @@ def start_monitor(current_os, interval):
                 for process in psutil.process_iter():
                     # we discern daemons by checking whether they are linked to a terminal
                     if process.terminal() is None:
-                        ps_new.append([process.pid, process.name()])
+                        ps_new.append([str(process.pid), process.name()])
+                        
             else: #must be windows
-                pass
+                for process in psutil.win_service_iter():
+                    ps_new.append([str(process.pid()), process.name()])
             #take difference between old and new lists
             ps_born = [i for i in ps_old + ps_new if i in ps_new and i not in ps_old]
             ps_died = [i for i in ps_old + ps_new if i in ps_old and i not in ps_new]
